@@ -1,0 +1,8 @@
+Set-Content -Path requirements.txt -Value @(
+    "pandas>=1.5.0",
+    "numpy>=1.20.0",
+    "matplotlib>=3.5.0",
+    "phreeqpy>=0.5.0",
+    "ipykernel",
+    "pytest"
+) -Encoding utf8
