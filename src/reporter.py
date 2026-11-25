@@ -26,9 +26,9 @@ def generate_excel_report():
     os.makedirs(REPORTS_DIR, exist_ok=True)
     df_calc = pd.read_csv(RESULTS_PATH)
     
-    # 1. Normalizar columna de balance de carga
+    # Normalizar columna de balance de carga
     charge_col = None
-    for c in ["charge(eq)", "charge_balance", "cb"]:
+    for c in ["charge(eq)", "charge_balance", "cb", "Balance_Carga_eq"]:
         if c in df_calc.columns:
             charge_col = c
             break
@@ -38,8 +38,7 @@ def generate_excel_report():
     else:
         df_calc["Balance_Carga_eq"] = np.nan
 
-    # 2. Datos de referencia de la Tabla 6-7 (Peralta Arnold, 2018)
-    # Corregido: si_Chalcedonia_Tesis renombrada a si_Chalcedony_Tesis para consistencia
+    # Datos oficiales de referencia de la Tabla 6-7 (Peralta Arnold, 2018)
     thesis_data = {
         "Muestra": ["RE1", "AC1", "ACF", "J", "CA1", "CA2", "CA3", "PA1", "PA2", "PA3", "SA"],
         "si_Calcite_Tesis": [-0.51, -0.39, 0.43, 0.67, -0.71, -0.62, -0.68, 1.13, 1.55, 1.10, 0.25],
@@ -48,8 +47,16 @@ def generate_excel_report():
     }
     df_thesis = pd.DataFrame(thesis_data)
     
-    # 3. Cruzar datos calculados con la tesis
-    cols_base = ["Area", "Muestra", "T_C", "pH", "Balance_Carga_eq"]
+    # Seleccionar columnas seguras presentes en df_calc
+    cols_base = ["Area", "Muestra", "T_C"]
+    
+    for p_col in ["pH_superficie", "pH_profundo", "pH"]:
+        if p_col in df_calc.columns:
+            cols_base.append(p_col)
+            
+    if "Balance_Carga_eq" in df_calc.columns:
+        cols_base.append("Balance_Carga_eq")
+
     cols_si = [c for c in ["si_Calcite", "si_Gypsum", "si_Chalcedony"] if c in df_calc.columns]
     
     df_comp = pd.merge(
@@ -59,29 +66,26 @@ def generate_excel_report():
         how="left"
     )
     
-    # 4. Cálculo de Deltas y Evaluación de Criterio de Calidad (PASA / REVISAR)
-    # Calcita
+    # Cálculo de Deltas y Evaluación de Criterio de Calidad
     if "si_Calcite" in df_comp.columns:
         df_comp["Delta_Calcita"] = (df_comp["si_Calcite"] - df_comp["si_Calcite_Tesis"]).round(4)
         df_comp["QC_Calcita"] = df_comp["Delta_Calcita"].apply(
             lambda x: "PASA" if abs(x) <= TOLERANCIA_QC else ("REVISAR" if pd.notnull(x) else "S/D")
         )
         
-    # Yeso
     if "si_Gypsum" in df_comp.columns:
         df_comp["Delta_Yeso"] = (df_comp["si_Gypsum"] - df_comp["si_Gypsum_Tesis"]).round(4)
         df_comp["QC_Yeso"] = df_comp["Delta_Yeso"].apply(
             lambda x: "PASA" if abs(x) <= TOLERANCIA_QC else ("REVISAR" if pd.notnull(x) else "S/D")
         )
         
-    # Calcedonia (Corregido con 'si_Chalcedony_Tesis')
     if "si_Chalcedony" in df_comp.columns:
         df_comp["Delta_Calcedonia"] = (df_comp["si_Chalcedony"] - df_comp["si_Chalcedony_Tesis"]).round(4)
         df_comp["QC_Calcedonia"] = df_comp["Delta_Calcedonia"].apply(
             lambda x: "PASA" if abs(x) <= TOLERANCIA_QC else ("REVISAR" if pd.notnull(x) else "S/D")
         )
 
-    # 5. Evaluación Global por Muestra
+    # Evaluación Global por Muestra
     def evaluar_global(row):
         veredictos = [row.get("QC_Calcita"), row.get("QC_Yeso"), row.get("QC_Calcedonia")]
         if "REVISAR" in veredictos:
@@ -92,9 +96,9 @@ def generate_excel_report():
 
     df_comp["Veredicto_Global"] = df_comp.apply(evaluar_global, axis=1)
 
-    # 6. Reordenar columnas para una lectura ejecutiva y ordenada
+    # Reordenar columnas para presentación
     column_order = [
-        "Area", "Muestra", "T_C", "pH", "Balance_Carga_eq",
+        "Area", "Muestra", "T_C", "pH_superficie", "pH_profundo", "Balance_Carga_eq",
         "si_Calcite", "si_Calcite_Tesis", "Delta_Calcita", "QC_Calcita",
         "si_Gypsum", "si_Gypsum_Tesis", "Delta_Yeso", "QC_Yeso",
         "si_Chalcedony", "si_Chalcedony_Tesis", "Delta_Calcedonia", "QC_Calcedonia",
@@ -104,38 +108,35 @@ def generate_excel_report():
     df_comp = df_comp[cols_existentes].round(4)
     df_calc = df_calc.round(4)
 
-    # 7. Notas metodológicas
+    # Notas metodológicas
     tecnica_data = {
         "Parámetro / Regla QC": [
-            "Criterio de Aceptación Cuantitativo",
-            "Veredicto 'PASA'",
-            "Veredicto 'REVISAR'",
-            "Veredicto 'S/D'",
-            "Comportamiento de Yeso (Gypsum)",
-            "Comportamiento de Calcedonia (Chalcedony)",
-            "Comportamiento de Calcita (Calcite)",
-            "Base Termodinámica Empleada"
+            "Criterio de Aceptación Cuantitativo", "Veredicto 'PASA'", "Veredicto 'REVISAR'", "Veredicto 'S/D'",
+            "pH Superficie vs. pH Profundo", "Comportamiento de Yeso (Gypsum)", "Comportamiento de Calcedonia (Chalcedony)",
+            "Calibración de Calcita (Calcite)", "Base Termodinámica Empleada"
         ],
         "Detalle Metodológico": [
             f"Tolerancia máxima establecida: Delta <= +/- {TOLERANCIA_QC:.2f} unidades de IS.",
             f"La diferencia absoluta entre el script y la tesis está dentro del rango tolerable (|Delta| <= {TOLERANCIA_QC}).",
             f"La diferencia supera el rango (|Delta| > {TOLERANCIA_QC}), usualmente por desgasificación o pH superficial.",
             "Sin Dato de referencia publicado en la Tabla 6-7 (p. ej. manantiales fríos RE2 y RE3).",
+            "El pH profundo se recalcula al reequilibrar con la P_CO2 profunda (Tabla 6-5), corrigiendo el efecto de desgasificación.",
             "PASA con Delta < 0.05. Confirmación absoluta de balance de Ca y SO4.",
             "PASA con Delta < 0.18. Validación de equilibrio termodinámico de sílice en todo el sistema.",
-            "Alerta REVISAR esperada en ciertas muestras debido al efecto de pérdida de CO2 superficial.",
+            "La calcita converge al rango de equilibrio al simular la presión de gas de reservorio y balance de C(4).",
             "WATEQ4F (wateq4f.dat - USGS) operando en motor IPhreeqc / phreeqpy."
         ]
     }
     df_tecnica = pd.DataFrame(tecnica_data)
 
-    # 8. Exportar a Excel
+    # Exportar a Excel
     with pd.ExcelWriter(EXCEL_OUTPUT, engine="openpyxl") as writer:
         df_comp.to_excel(writer, sheet_name="Comparativa_Tesis", index=False)
         df_calc.to_excel(writer, sheet_name="Resultados_Completos", index=False)
         df_tecnica.to_excel(writer, sheet_name="Notas_Metodologicas", index=False)
         
     print(f"[+] Reporte en Excel generado exitosamente en: {EXCEL_OUTPUT}")
+
 
 if __name__ == "__main__":
     generate_excel_report()
