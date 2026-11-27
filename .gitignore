@@ -1,12 +1,19 @@
-﻿@"
+# Python
 __pycache__/
 *.py[cod]
+.pytest_cache/
+
+# Entornos virtuales
 .venv/
 venv/
+
+# Jupyter
 .ipynb_checkpoints/
+
+# PHREEQC: archivos temporales que IPhreeqc deja en la carpeta de trabajo
 *.pqo
 *.pqi
-"@ | Out-File -FilePath .gitignore -Encoding ascii
+/phreeqc.*.out
 
-# Reportes nativos PHREEQC generados en lote
-data/processed/*.out
+# Archivos de bloqueo de Excel/Word mientras están abiertos (Windows)
+~$*
