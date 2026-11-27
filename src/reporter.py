@@ -102,6 +102,8 @@ def generate_excel_report():
         "si_Calcite", "si_Calcite_Tesis", "Delta_Calcita", "QC_Calcita",
         "si_Gypsum", "si_Gypsum_Tesis", "Delta_Yeso", "QC_Yeso",
         "si_Chalcedony", "si_Chalcedony_Tesis", "Delta_Calcedonia", "QC_Calcedonia",
+        "si_Aragonite", "si_Anhydrite", "si_Halite", "si_Hematite", "si_Magnetite",
+        "si_Pyrite", "si_Sphalerite", "si_Galena", "si_Millerite", "si_Alabandite", "si_Covellite",
         "Veredicto_Global"
     ]
     cols_existentes = [c for c in column_order if c in df_comp.columns]

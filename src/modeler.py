@@ -32,26 +32,45 @@ def ensure_database():
 def build_phreeqc_input(row):
     """
     Construye el archivo de entrada de PHREEQC para cada muestra.
-    Reequilibra con CO2(g) para restaurar el pH de reservorio profundo.
+    Reequilibra con CO2(g) para restaurar el pH de reservorio profundo y
+    especia elementos mayoritarios, trazas y sulfuros metálicos.
     """
     # Mapeo de presiones parciales de CO2 (P_CO2) de la Tabla 6-5 de la Tesis
     p_co2_mapping = {
         "RE1": 0.032,
+        "RE2": 0.020,
+        "RE3": 0.020,
         "AC1": 0.018,
         "ACF": 0.027,
+        "LC": 0.022,
         "J": 0.0046,
         "CA1": 0.011,
         "CA2": 0.0089,
         "CA3": 0.014,
         "PA1": 0.018,
+        "PA2": 0.019,
         "PA3": 0.020,
         "SA": 0.027
     }
     p_co2 = p_co2_mapping.get(row['Muestra'], 0.01)
     log_pco2 = np.log10(p_co2)
 
+    # Conversión segura de trazas de ug/L a mg/L para la entrada de PHREEQC
+    fe_mg = row.get("Fe_ugL", 10.0) / 1000.0 if pd.notnull(row.get("Fe_ugL")) else 0.01
+    mn_mg = row.get("Mn_ugL", 5.0) / 1000.0 if pd.notnull(row.get("Mn_ugL")) else 0.005
+    zn_mg = row.get("Zn_ugL", 5.0) / 1000.0 if pd.notnull(row.get("Zn_ugL")) else 0.005
+    as_mg = row.get("As_ugL", 10.0) / 1000.0 if pd.notnull(row.get("As_ugL")) else 0.01
+    
+    # Especies adicionales (Co, Ni, Cu, Ba, Sb)
+    co_mg = row.get("Co_ugL", 1.0) / 1000.0 if pd.notnull(row.get("Co_ugL")) else 0.001
+    ni_mg = row.get("Ni_ugL", 1.0) / 1000.0 if pd.notnull(row.get("Ni_ugL")) else 0.001
+    cu_ug = row.get("Cu_ugL", 1.0) if pd.notnull(row.get("Cu_ugL")) else 1.0
+    cu_mg = cu_ug / 1000.0
+    ba_mg = row.get("Ba_ugL", 100.0) / 1000.0 if pd.notnull(row.get("Ba_ugL")) else 0.1
+    sb_mg = row.get("Sb_ugL", 5.0) / 1000.0 if pd.notnull(row.get("Sb_ugL")) else 0.005
+
     solution_template = f"""
-    TITLE Reequilibrio Geotérmico Profundo - Muestra {row['Muestra']}
+    TITLE Reequilibrio Geotérmico Profundo y Metalogénesis - Muestra {row['Muestra']}
     SOLUTION {row.name + 1}
         temp        {row['T_C']}
         pH          {row['pH']}
@@ -67,7 +86,13 @@ def build_phreeqc_input(row):
         C(4)        {row['HCO3_mgL']} as HCO3
         Si          {row['SiO2_mgL']} as SiO2
         B           {row['B_mgL']}
-
+        Fe          {fe_mg:.6f}
+        Mn          {mn_mg:.6f}
+        Zn          {zn_mg:.6f}
+        As          {as_mg:.6f}
+        Ba          {ba_mg:.6f}
+        S(-2)       0.01                     # Declaración de traza de sulfuro para minerales reductores
+    
     EQUILIBRIUM_PHASES {row.name + 1}
         CO2(g)      {log_pco2:.4f}
     
@@ -79,12 +104,22 @@ def build_phreeqc_input(row):
         -user_punch     true
 
     USER_PUNCH 1
-        -headings si_Calcite si_Aragonite si_Gypsum si_Chalcedony si_Quartz
+        -headings si_Calcite si_Aragonite si_Gypsum si_Anhydrite si_Chalcedony si_Quartz si_Halite si_Hematite si_Magnetite si_Sphalerite si_Galena si_Pyrite si_Millerite si_Alabandite si_Covellite
         10 PUNCH SI("Calcite")
         20 PUNCH SI("Aragonite")
         30 PUNCH SI("Gypsum")
-        40 PUNCH SI("Chalcedony")
-        50 PUNCH SI("Quartz")
+        40 PUNCH SI("Anhydrite")
+        50 PUNCH SI("Chalcedony")
+        60 PUNCH SI("Quartz")
+        70 PUNCH SI("Halite")
+        80 PUNCH SI("Hematite")
+        90 PUNCH SI("Magnetite")
+        100 PUNCH SI("Sphalerite")
+        110 PUNCH SI("Galena")
+        120 PUNCH SI("Pyrite")
+        130 PUNCH SI("Millerite")
+        140 PUNCH SI("Alabandite")
+        150 PUNCH SI("Covellite")
     END
     """
     return solution_template
@@ -126,7 +161,10 @@ def run_speciation():
                 # Crear diccionario en minúsculas para evitar discrepancias de mayúsculas/minúsculas de PHREEQC
                 full_dict = {str(k).lower().strip(): v for k, v in zip(raw_headers, raw_values)}
                 
-                target_headings = ["pH_profundo", "mu", "charge(eq)", "si_Calcite", "si_Aragonite", "si_Gypsum", "si_Chalcedony", "si_Quartz"]
+                target_headings = ["pH_profundo", "mu", "charge(eq)", "si_Calcite", "si_Aragonite", "si_Gypsum", 
+                                   "si_Anhydrite", "si_Chalcedony", "si_Quartz", "si_Halite", "si_Hematite",
+                                    "si_Magnetite", "si_Sphalerite", "si_Galena", "si_Pyrite", "si_Millerite", 
+                                    "si_Alabandite", "si_Covellite"]
                 
                 row_results = {
                     "Area": row["Area"],
