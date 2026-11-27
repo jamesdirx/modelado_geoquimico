@@ -1,0 +1,302 @@
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	TITLE Simulacion Universal - Proyecto El_Aguajito - Muestra ID43_CA-EAZ-2-19
+	SOLUTION 1
+	    temp        40.7
+	    pH          8.3
+	    pe          4.0
+	    units       mg/l
+	    Cl          79.000000
+	    S(6)        656.600000
+	    Ca          59.900000
+	    Mg          27.800000
+	    Na          245.200000
+	    K           20.300000
+	    Li          0.093000
+	    Si          78.680000 as SiO2
+	    B           0.255000
+	    Zn          0.005000
+	    Pb          0.002000
+	    Ba          0.020000
+	    As          0.003000
+	SELECTED_OUTPUT 1
+	    reset          false
+	    ph             true
+	    charge_balance true
+	    percent_error  true
+	    ionic_strength true
+	    user_punch     true
+	USER_PUNCH 1
+	    headings si_Calcite si_Aragonite si_Gypsum si_Anhydrite si_Chalcedony si_Quartz si_Halite si_Fluorite si_Hematite si_Magnetite si_Goethite si_Fe(OH)3(a) si_Jarosite-K si_Jarosite-Na si_Jarosite-H si_Jarosite(ss) si_Alunite si_Melanterite si_Epsomite si_Pyrite si_Sphalerite si_Galena si_Covellite
+	    10 PUNCH SI("Calcite")
+	    20 PUNCH SI("Aragonite")
+	    30 PUNCH SI("Gypsum")
+	    40 PUNCH SI("Anhydrite")
+	    50 PUNCH SI("Chalcedony")
+	    60 PUNCH SI("Quartz")
+	    70 PUNCH SI("Halite")
+	    80 PUNCH SI("Fluorite")
+	    90 PUNCH SI("Hematite")
+	    100 PUNCH SI("Magnetite")
+	    110 PUNCH SI("Goethite")
+	    120 PUNCH SI("Fe(OH)3(a)")
+	    130 PUNCH SI("Jarosite-K")
+	    140 PUNCH SI("Jarosite-Na")
+	    150 PUNCH SI("Jarosite-H")
+	    160 PUNCH SI("Jarosite(ss)")
+	    170 PUNCH SI("Alunite")
+	    180 PUNCH SI("Melanterite")
+	    190 PUNCH SI("Epsomite")
+	    200 PUNCH SI("Pyrite")
+	    210 PUNCH SI("Sphalerite")
+	    220 PUNCH SI("Galena")
+	    230 PUNCH SI("Covellite")
+	END
+-----
+TITLE
+-----
+
+ Simulacion Universal - Proyecto El_Aguajito - Muestra ID43_CA-EAZ-2-19
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+WARNING: Mineral Jarosite-H, not found.
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	As                4.009e-08   4.009e-08
+	B                 2.362e-05   2.362e-05
+	Ba                1.458e-07   1.458e-07
+	Ca                1.496e-03   1.496e-03
+	Cl                2.231e-03   2.231e-03
+	K                 5.198e-04   5.198e-04
+	Li                1.342e-05   1.342e-05
+	Mg                1.145e-03   1.145e-03
+	Na                1.068e-02   1.068e-02
+	Pb                9.664e-09   9.664e-09
+	S(6)              6.843e-03   6.843e-03
+	Si                1.311e-03   1.311e-03
+	Zn                7.658e-08   7.658e-08
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   8.300    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                 Ionic strength (mol/kgw)  =   2.177e-02
+                       Mass of water (kg)  =   1.000e+00
+                 Total alkalinity (eq/kg)  =   8.176e-05
+                         Temperature (°C)  =  40.70
+                  Electrical balance (eq)  =   4.948e-04
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   1.73
+                               Iterations  =   4
+                                  Total H  = 1.110177e+02
+                                  Total O  = 5.553891e+01
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma    cm³/mol
+
+   OH-             6.959e-06   5.976e-06    -5.157    -5.224    -0.066     (0)  
+   H+              5.673e-09   5.012e-09    -8.246    -8.300    -0.054      0.00
+   H2O             5.551e+01   9.996e-01     1.744    -0.000     0.000     18.16
+As(3)         9.658e-22
+   H3AsO3          7.505e-22   7.543e-22   -21.125   -21.122     0.002     (0)  
+   H2AsO3-         2.152e-22   1.857e-22   -21.667   -21.731    -0.064     (0)  
+   HAsO3-2         2.537e-28   1.407e-28   -27.596   -27.852    -0.256     (0)  
+   H4AsO3+         2.171e-30   1.873e-30   -29.663   -29.727    -0.064     (0)  
+   AsO3-3          3.520e-35   9.334e-36   -34.453   -35.030    -0.577     (0)  
+As(5)         4.009e-08
+   HAsO4-2         3.836e-08   2.127e-08    -7.416    -7.672    -0.256     (0)  
+   H2AsO4-         1.673e-09   1.444e-09    -8.776    -8.841    -0.064     (0)  
+   AsO4-3          5.172e-11   1.371e-11   -10.286   -10.863    -0.577     (0)  
+   H3AsO4          1.657e-15   1.665e-15   -14.781   -14.779     0.002     (0)  
+B             2.362e-05
+   H3BO3           2.006e-05   2.016e-05    -4.698    -4.696     0.002     (0)  
+   H2BO3-          3.562e-06   3.038e-06    -5.448    -5.517    -0.069     (0)  
+Ba            1.458e-07
+   Ba+2            7.634e-08   4.303e-08    -7.117    -7.366    -0.249     (0)  
+   BaSO4           6.946e-08   6.981e-08    -7.158    -7.156     0.002     (0)  
+   BaOH+           3.356e-13   2.908e-13   -12.474   -12.536    -0.062     (0)  
+Ca            1.496e-03
+   Ca+2            1.054e-03   5.990e-04    -2.977    -3.223    -0.245     (0)  
+   CaSO4           4.424e-04   4.447e-04    -3.354    -3.352     0.002     (0)  
+   CaOH+           2.276e-08   1.983e-08    -7.643    -7.703    -0.060     (0)  
+   CaHSO4+         1.892e-11   1.633e-11   -10.723   -10.787    -0.064     (0)  
+Cl            2.231e-03
+   Cl-             2.231e-03   1.917e-03    -2.652    -2.717    -0.066     (0)  
+   ZnOHCl          2.457e-10   2.469e-10    -9.610    -9.608     0.002     (0)  
+   ZnCl+           2.255e-10   1.942e-10    -9.647    -9.712    -0.065     (0)  
+   PbCl+           1.438e-10   1.240e-10    -9.842    -9.906    -0.064     (0)  
+   ZnCl2           4.119e-13   4.140e-13   -12.385   -12.383     0.002     (0)  
+   PbCl2           2.838e-13   2.853e-13   -12.547   -12.545     0.002     (0)  
+   ZnCl3-          1.131e-15   9.740e-16   -14.947   -15.011    -0.065     (0)  
+   PbCl3-          5.520e-16   4.763e-16   -15.258   -15.322    -0.064     (0)  
+   ZnCl4-2         1.869e-18   1.053e-18   -17.728   -17.977    -0.249     (0)  
+   PbCl4-2         8.844e-19   4.903e-19   -18.053   -18.310    -0.256     (0)  
+H(0)          3.050e-28
+   H2              1.525e-28   1.533e-28   -27.817   -27.814     0.002     (0)  
+K             5.198e-04
+   K+              5.050e-04   4.340e-04    -3.297    -3.363    -0.066     (0)  
+   KSO4-           1.475e-05   1.281e-05    -4.831    -4.893    -0.061     (0)  
+Li            1.342e-05
+   Li+             1.323e-05   1.153e-05    -4.878    -4.938    -0.060     (0)  
+   LiSO4-          1.880e-07   1.629e-07    -6.726    -6.788    -0.062     (0)  
+Mg            1.145e-03
+   Mg+2            6.980e-04   4.018e-04    -3.156    -3.396    -0.240     (0)  
+   MgSO4           4.455e-04   4.477e-04    -3.351    -3.349     0.002     (0)  
+   MgOH+           1.281e-06   1.119e-06    -5.892    -5.951    -0.059     (0)  
+Na            1.068e-02
+   Na+             1.049e-02   9.072e-03    -1.979    -2.042    -0.063     (0)  
+   NaSO4-          1.863e-04   1.618e-04    -3.730    -3.791    -0.061     (0)  
+O(0)          2.295e-32
+   O2              1.148e-32   1.153e-32   -31.940   -31.938     0.002     (0)  
+Pb            9.664e-09
+   PbOH+           5.060e-09   4.367e-09    -8.296    -8.360    -0.064     (0)  
+   PbSO4           2.034e-09   2.044e-09    -8.692    -8.690     0.002     (0)  
+   Pb+2            2.025e-09   1.123e-09    -8.693    -8.950    -0.256     (0)  
+   Pb(OH)2         3.371e-10   3.388e-10    -9.472    -9.470     0.002     (0)  
+   PbCl+           1.438e-10   1.240e-10    -9.842    -9.906    -0.064     (0)  
+   Pb(SO4)2-2      6.263e-11   3.472e-11   -10.203   -10.459    -0.256     (0)  
+   Pb(OH)3-        8.992e-13   7.759e-13   -12.046   -12.110    -0.064     (0)  
+   PbCl2           2.838e-13   2.853e-13   -12.547   -12.545     0.002     (0)  
+   Pb(OH)4-2       6.395e-16   3.545e-16   -15.194   -15.450    -0.256     (0)  
+   PbCl3-          5.520e-16   4.763e-16   -15.258   -15.322    -0.064     (0)  
+   Pb2OH+3         4.139e-16   1.098e-16   -15.383   -15.960    -0.577     (0)  
+   Pb3(OH)4+2      4.990e-17   2.766e-17   -16.302   -16.558    -0.256     (0)  
+   PbCl4-2         8.844e-19   4.903e-19   -18.053   -18.310    -0.256     (0)  
+S(6)          6.843e-03
+   SO4-2           5.754e-03   3.237e-03    -2.240    -2.490    -0.250     (0)  
+   MgSO4           4.455e-04   4.477e-04    -3.351    -3.349     0.002     (0)  
+   CaSO4           4.424e-04   4.447e-04    -3.354    -3.352     0.002     (0)  
+   NaSO4-          1.863e-04   1.618e-04    -3.730    -3.791    -0.061     (0)  
+   KSO4-           1.475e-05   1.281e-05    -4.831    -4.893    -0.061     (0)  
+   LiSO4-          1.880e-07   1.629e-07    -6.726    -6.788    -0.062     (0)  
+   BaSO4           6.946e-08   6.981e-08    -7.158    -7.156     0.002     (0)  
+   ZnSO4           1.651e-08   1.660e-08    -7.782    -7.780     0.002     (0)  
+   HSO4-           2.624e-09   2.267e-09    -8.581    -8.644    -0.063     (0)  
+   PbSO4           2.034e-09   2.044e-09    -8.692    -8.690     0.002     (0)  
+   Zn(SO4)2-2      7.023e-10   3.893e-10    -9.154    -9.410    -0.256     (0)  
+   Pb(SO4)2-2      6.263e-11   3.472e-11   -10.203   -10.459    -0.256     (0)  
+   CaHSO4+         1.892e-11   1.633e-11   -10.723   -10.787    -0.064     (0)  
+Si            1.311e-03
+   H4SiO4          1.241e-03   1.247e-03    -2.906    -2.904     0.002     (0)  
+   H3SiO4-         6.985e-05   6.017e-05    -4.156    -4.221    -0.065     (0)  
+   H2SiO4-2        3.645e-09   2.073e-09    -8.438    -8.683    -0.245     (0)  
+Zn            7.658e-08
+   Zn+2            3.385e-08   1.950e-08    -7.470    -7.710    -0.240     (0)  
+   ZnSO4           1.651e-08   1.660e-08    -7.782    -7.780     0.002     (0)  
+   ZnOH+           1.532e-08   1.322e-08    -7.815    -7.879    -0.064     (0)  
+   Zn(OH)2         9.716e-09   9.765e-09    -8.013    -8.010     0.002     (0)  
+   Zn(SO4)2-2      7.023e-10   3.893e-10    -9.154    -9.410    -0.256     (0)  
+   ZnOHCl          2.457e-10   2.469e-10    -9.610    -9.608     0.002     (0)  
+   ZnCl+           2.255e-10   1.942e-10    -9.647    -9.712    -0.065     (0)  
+   Zn(OH)3-        7.137e-12   6.159e-12   -11.146   -11.211    -0.064     (0)  
+   ZnCl2           4.119e-13   4.140e-13   -12.385   -12.383     0.002     (0)  
+   ZnCl3-          1.131e-15   9.740e-16   -14.947   -15.011    -0.065     (0)  
+   Zn(OH)4-2       3.512e-16   1.947e-16   -15.454   -15.711    -0.256     (0)  
+   ZnCl4-2         1.869e-18   1.053e-18   -17.728   -17.977    -0.249     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(313 K,   1 atm)
+
+  Anglesite        -3.73    -11.44   -7.71  PbSO4
+  Anhydrite        -1.25     -5.71   -4.46  CaSO4
+  Arsenolite      -41.13    -42.24   -1.12  As2O3
+  As2O5(cr)       -37.51    -29.56    7.95  As2O5
+  As_native       -46.50    -58.02  -11.52  As
+  Ba3(AsO4)2        5.94    -43.82  -49.76  Ba3(AsO4)2
+  Barite           -0.09     -9.86   -9.76  BaSO4
+  Bianchite        -8.43    -10.20   -1.77  ZnSO4:6H2O
+  Brucite          -2.64     13.20   15.85  Mg(OH)2
+  Ca3(AsO4)2:4w   -12.49    -31.39  -18.91  Ca3(AsO4)2:4H2O
+  Chalcedony        0.47     -2.90   -3.38  SiO2
+  Chrysotile        3.46     33.80   30.35  Mg3Si2O5(OH)4
+  Claudetite      -41.15    -42.24   -1.09  As2O3
+  Clinoenstatite   -0.31     10.30   10.61  MgSiO3
+  Cotunnite        -9.82    -14.38   -4.56  PbCl2
+  Cristobalite      0.48     -2.90   -3.39  SiO2
+  Diopside          2.07     20.77   18.71  CaMgSi2O6
+  Epsomite         -3.85     -5.89   -2.04  MgSO4:7H2O
+  Forsterite       -3.02     23.50   26.52  Mg2SiO4
+  Goslarite        -8.36    -10.20   -1.84  ZnSO4:7H2O
+  Gypsum           -1.11     -5.71   -4.60  CaSO4:2H2O
+  H2(g)           -24.60    -27.81   -3.21  H2
+  H2O(g)           -1.12     -0.00    1.12  H2O
+  Halite           -6.38     -4.76    1.62  NaCl
+  Larnakite        -3.27     -3.79   -0.52  PbO:PbSO4
+  Laurionite       -3.99     -3.37    0.62  PbOHCl
+  Litharge         -4.47      7.65   12.12  PbO
+  Magadiite         0.23    -14.07  -14.30  NaSi7O13(OH)3:3H2O
+  Massicot         -4.64      7.65   12.29  PbO
+  Minium          -22.37     47.55   69.92  Pb3O4
+  Mirabilite       -6.16     -6.58   -0.42  Na2SO4:10H2O
+  O2(g)           -28.95    -31.94   -2.99  O2
+  Pb(BO2)2         -9.14     -1.74    7.40  Pb(BO2)2
+  Pb(OH)2          -5.38      7.65   13.03  Pb(OH)2
+  Pb2(OH)3Cl       -4.51      4.28    8.79  Pb2(OH)3Cl
+  Pb2O(OH)2       -10.90     15.30   26.20  PbO:Pb(OH)2
+  Pb2O3           -21.14     39.90   61.04  Pb2O3
+  Pb2SiO4          -6.41     12.40   18.81  Pb2SiO4
+  Pb3(AsO4)2      -13.17    -48.57  -35.40  Pb3(AsO4)2
+  Pb3O2SO4         -5.78      3.86    9.64  PbSO4:2PbO
+  Pb4(OH)6SO4      -9.59     11.51   21.10  Pb4(OH)6SO4
+  Pb4O3SO4         -9.30     11.51   20.81  PbSO4:3PbO
+  PbMetal         -21.23    -16.95    4.28  Pb
+  PbO:0.3H2O       -5.33      7.65   12.98  PbO:0.33H2O
+  PbSiO3           -2.23      4.75    6.98  PbSiO3
+  Plattnerite     -14.46     32.25   46.71  PbO2
+  Portlandite      -8.29     13.38   21.66  Ca(OH)2
+  Quartz            0.86     -2.90   -3.76  SiO2
+  Sepiolite         2.33     17.70   15.37  Mg2Si3O7.5OH:3H2O
+  Sepiolite(d)     -0.96     17.70   18.66  Mg2Si3O7.5OH:3H2O
+  Silicagel        -0.05     -2.90   -2.86  SiO2
+  SiO2(a)          -0.31     -2.90   -2.59  SiO2
+  Talc              8.30     28.00   19.70  Mg3Si4O10(OH)2
+  Thenardite       -6.37     -6.57   -0.20  Na2SO4
+  Tremolite        16.52     69.54   53.02  Ca2Mg5Si8O22(OH)2
+  Willemite         0.77     14.88   14.11  Zn2SiO4
+  Zincite(c)       -1.45      8.89   10.34  ZnO
+  Zincosite       -12.51    -10.20    2.31  ZnSO4
+  Zn(BO2)2         -8.79     -0.50    8.29  Zn(BO2)2
+  Zn(OH)2-a        -3.56      8.89   12.45  Zn(OH)2
+  Zn(OH)2-b        -2.86      8.89   11.75  Zn(OH)2
+  Zn(OH)2-c        -3.31      8.89   12.20  Zn(OH)2
+  Zn(OH)2-e        -2.61      8.89   11.50  Zn(OH)2
+  Zn(OH)2-g        -2.82      8.89   11.71  Zn(OH)2
+  Zn2(OH)2SO4      -8.81     -1.31    7.50  Zn2(OH)2SO4
+  Zn2(OH)3Cl       -8.44      6.76   15.20  Zn2(OH)3Cl
+  Zn3(AsO4)2:2.5w -17.31    -44.86  -27.55  Zn3(AsO4)2:2.5H2O
+  Zn3O(SO4)2      -28.26    -11.51   16.75  ZnO:2ZnSO4
+  Zn4(OH)6SO4     -11.93     16.47   28.40  Zn4(OH)6SO4
+  Zn5(OH)8Cl2     -16.09     22.41   38.50  Zn5(OH)8Cl2
+  ZnCl2           -19.53    -13.14    6.39  ZnCl2
+  ZnMetal         -40.12    -15.71   24.41  Zn
+  ZnO(a)           -2.42      8.89   11.31  ZnO
+  ZnSiO3            3.73      5.99    2.26  ZnSiO3
+  ZnSO4:H2O        -9.24    -10.20   -0.96  ZnSO4:H2O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+-------------------------------
+End of Run after 4.269 Seconds.
+-------------------------------
+

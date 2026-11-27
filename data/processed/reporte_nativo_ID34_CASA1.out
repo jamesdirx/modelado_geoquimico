@@ -1,0 +1,257 @@
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	TITLE Simulacion Universal - Proyecto El_Aguajito - Muestra ID34_CASA1
+	SOLUTION 1
+	    temp        17.4
+	    pH          7.88
+	    pe          4.0
+	    units       mg/l
+	    Cl          195.600000
+	    S(6)        38.800000
+	    Ca          57.600000
+	    Mg          40.800000
+	    Na          93.800000
+	    K           7.400000
+	    Li          0.020000
+	    Si          45.280000 as SiO2
+	    B           0.200000
+	    Al          0.100000
+	    Ba          0.030000
+	    As          0.010000
+	SELECTED_OUTPUT 1
+	    reset          false
+	    ph             true
+	    charge_balance true
+	    percent_error  true
+	    ionic_strength true
+	    user_punch     true
+	USER_PUNCH 1
+	    headings si_Calcite si_Aragonite si_Gypsum si_Anhydrite si_Chalcedony si_Quartz si_Halite si_Fluorite si_Hematite si_Magnetite si_Goethite si_Fe(OH)3(a) si_Jarosite-K si_Jarosite-Na si_Jarosite-H si_Jarosite(ss) si_Alunite si_Melanterite si_Epsomite si_Pyrite si_Sphalerite si_Galena si_Covellite
+	    10 PUNCH SI("Calcite")
+	    20 PUNCH SI("Aragonite")
+	    30 PUNCH SI("Gypsum")
+	    40 PUNCH SI("Anhydrite")
+	    50 PUNCH SI("Chalcedony")
+	    60 PUNCH SI("Quartz")
+	    70 PUNCH SI("Halite")
+	    80 PUNCH SI("Fluorite")
+	    90 PUNCH SI("Hematite")
+	    100 PUNCH SI("Magnetite")
+	    110 PUNCH SI("Goethite")
+	    120 PUNCH SI("Fe(OH)3(a)")
+	    130 PUNCH SI("Jarosite-K")
+	    140 PUNCH SI("Jarosite-Na")
+	    150 PUNCH SI("Jarosite-H")
+	    160 PUNCH SI("Jarosite(ss)")
+	    170 PUNCH SI("Alunite")
+	    180 PUNCH SI("Melanterite")
+	    190 PUNCH SI("Epsomite")
+	    200 PUNCH SI("Pyrite")
+	    210 PUNCH SI("Sphalerite")
+	    220 PUNCH SI("Galena")
+	    230 PUNCH SI("Covellite")
+	END
+-----
+TITLE
+-----
+
+ Simulacion Universal - Proyecto El_Aguajito - Muestra ID34_CASA1
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+WARNING: Mineral Jarosite-H, not found.
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Al                3.708e-06   3.708e-06
+	As                1.335e-07   1.335e-07
+	B                 1.851e-05   1.851e-05
+	Ba                2.185e-07   2.185e-07
+	Ca                1.438e-03   1.438e-03
+	Cl                5.520e-03   5.520e-03
+	K                 1.893e-04   1.893e-04
+	Li                2.884e-06   2.884e-06
+	Mg                1.679e-03   1.679e-03
+	Na                4.082e-03   4.082e-03
+	S(6)              4.041e-04   4.041e-04
+	Si                7.540e-04   7.540e-04
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   7.880    
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                 Ionic strength (mol/kgw)  =   1.162e-02
+                       Mass of water (kg)  =   1.000e+00
+                 Total alkalinity (eq/kg)  =   2.338e-05
+                         Temperature (°C)  =  17.40
+                  Electrical balance (eq)  =   4.168e-03
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =  25.22
+                               Iterations  =   3
+                                  Total H  = 1.110155e+02
+                                  Total O  = 5.551092e+01
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma    cm³/mol
+
+   OH-             4.664e-07   4.173e-07    -6.331    -6.380    -0.048     (0)  
+   H+              1.449e-08   1.318e-08    -7.839    -7.880    -0.041      0.00
+   H2O             5.551e+01   9.998e-01     1.744    -0.000     0.000     18.04
+Al            3.708e-06
+   Al(OH)4-        3.678e-06   3.302e-06    -5.434    -5.481    -0.047     (0)  
+   Al(OH)3         2.512e-08   2.519e-08    -7.600    -7.599     0.001     (0)  
+   Al(OH)2+        4.512e-09   4.063e-09    -8.346    -8.391    -0.046     (0)  
+   AlOH+2          2.083e-11   1.369e-11   -10.681   -10.864    -0.182     (0)  
+   Al+3            7.053e-14   3.003e-14   -13.152   -13.522    -0.371     (0)  
+   AlSO4+          2.003e-14   1.798e-14   -13.698   -13.745    -0.047     (0)  
+   Al(SO4)2-       1.279e-16   1.149e-16   -15.893   -15.940    -0.047     (0)  
+   AlHSO4+2        3.060e-23   1.980e-23   -22.514   -22.703    -0.189     (0)  
+As(3)         5.511e-18
+   H3AsO3          5.274e-18   5.288e-18   -17.278   -17.277     0.001     (0)  
+   H2AsO3-         2.368e-19   2.124e-19   -18.626   -18.673    -0.047     (0)  
+   H4AsO3+         3.851e-26   3.454e-26   -25.414   -25.462    -0.047     (0)  
+   HAsO3-2         3.549e-26   2.296e-26   -25.450   -25.639    -0.189     (0)  
+   AsO3-3          7.084e-34   2.661e-34   -33.150   -33.575    -0.425     (0)  
+As(5)         1.335e-07
+   HAsO4-2         1.169e-07   7.564e-08    -6.932    -7.121    -0.189     (0)  
+   H2AsO4-         1.662e-08   1.491e-08    -7.779    -7.826    -0.047     (0)  
+   AsO4-3          2.822e-11   1.060e-11   -10.549   -10.975    -0.425     (0)  
+   H3AsO4          3.630e-14   3.640e-14   -13.440   -13.439     0.001     (0)  
+B             1.851e-05
+   H3BO3           1.775e-05   1.780e-05    -4.751    -4.750     0.001     (0)  
+   H2BO3-          7.560e-07   6.740e-07    -6.121    -6.171    -0.050     (0)  
+Ba            2.185e-07
+   Ba+2            2.045e-07   1.337e-07    -6.689    -6.874    -0.185     (0)  
+   BaSO4           1.400e-08   1.404e-08    -7.854    -7.853     0.001     (0)  
+   BaOH+           3.821e-13   3.436e-13   -12.418   -12.464    -0.046     (0)  
+Ca            1.438e-03
+   Ca+2            1.402e-03   9.207e-04    -2.853    -3.036    -0.183     (0)  
+   CaSO4           3.568e-05   3.578e-05    -4.448    -4.446     0.001     (0)  
+   CaOH+           1.285e-08   1.159e-08    -7.891    -7.936    -0.045     (0)  
+   CaHSO4+         2.822e-12   2.531e-12   -11.549   -11.597    -0.047     (0)  
+Cl            5.520e-03
+   Cl-             5.520e-03   4.941e-03    -2.258    -2.306    -0.048     (0)  
+H(0)          2.652e-27
+   H2              1.326e-27   1.330e-27   -26.877   -26.876     0.001     (0)  
+K             1.893e-04
+   K+              1.891e-04   1.693e-04    -3.723    -3.771    -0.048     (0)  
+   KSO4-           2.415e-07   2.174e-07    -6.617    -6.663    -0.046     (0)  
+Li            2.884e-06
+   Li+             2.881e-06   2.599e-06    -5.540    -5.585    -0.045     (0)  
+   LiSO4-          2.642e-09   2.376e-09    -8.578    -8.624    -0.046     (0)  
+Mg            1.679e-03
+   Mg+2            1.635e-03   1.082e-03    -2.786    -2.966    -0.180     (0)  
+   MgSO4           4.333e-05   4.345e-05    -4.363    -4.362     0.001     (0)  
+   MgOH+           1.630e-07   1.473e-07    -6.788    -6.832    -0.044     (0)  
+Na            4.082e-03
+   Na+             4.078e-03   3.662e-03    -2.390    -2.436    -0.047     (0)  
+   NaSO4-          4.064e-06   3.659e-06    -5.391    -5.437    -0.046     (0)  
+O(0)          0.000e+00
+   O2              0.000e+00   0.000e+00   -41.146   -41.145     0.001     (0)  
+S(6)          4.041e-04
+   SO4-2           3.208e-04   2.095e-04    -3.494    -3.679    -0.185     (0)  
+   MgSO4           4.333e-05   4.345e-05    -4.363    -4.362     0.001     (0)  
+   CaSO4           3.568e-05   3.578e-05    -4.448    -4.446     0.001     (0)  
+   NaSO4-          4.064e-06   3.659e-06    -5.391    -5.437    -0.046     (0)  
+   KSO4-           2.415e-07   2.174e-07    -6.617    -6.663    -0.046     (0)  
+   BaSO4           1.400e-08   1.404e-08    -7.854    -7.853     0.001     (0)  
+   LiSO4-          2.642e-09   2.376e-09    -8.578    -8.624    -0.046     (0)  
+   HSO4-           2.547e-10   2.287e-10    -9.594    -9.641    -0.047     (0)  
+   CaHSO4+         2.822e-12   2.531e-12   -11.549   -11.597    -0.047     (0)  
+   AlSO4+          2.003e-14   1.798e-14   -13.698   -13.745    -0.047     (0)  
+   Al(SO4)2-       1.279e-16   1.149e-16   -15.893   -15.940    -0.047     (0)  
+   AlHSO4+2        3.060e-23   1.980e-23   -22.514   -22.703    -0.189     (0)  
+Si            7.540e-04
+   H4SiO4          7.469e-04   7.489e-04    -3.127    -3.126     0.001     (0)  
+   H3SiO4-         7.079e-06   6.344e-06    -5.150    -5.198    -0.048     (0)  
+   H2SiO4-2        2.968e-11   1.950e-11   -10.527   -10.710    -0.182     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(290 K,   1 atm)
+
+  Adularia          2.54    -18.63  -21.16  KAlSi3O8
+  Al(OH)3(a)       -1.19     10.12   11.31  Al(OH)3
+  AlAsO4:2H2O      -8.66    -24.50  -15.84  AlAsO4:2H2O
+  Albite            1.21    -17.29  -18.50  NaAlSi3O8
+  AlumK           -19.34    -24.65   -5.31  KAl(SO4)2:12H2O
+  Alunite          -3.98     -4.42   -0.44  KAl3(SO4)2(OH)6
+  Analcime         -1.12    -14.17  -13.05  NaAlSi2O6:H2O
+  Anhydrite        -2.38     -6.71   -4.34  CaSO4
+  Anorthite        -0.31    -20.25  -19.94  CaAl2Si2O8
+  Arsenolite      -33.04    -34.55   -1.52  As2O3
+  As2O5(cr)       -35.25    -26.88    8.37  As2O5
+  As_native       -39.86    -52.92  -13.06  As
+  Ba3(AsO4)2        7.72    -42.57  -50.29  Ba3(AsO4)2
+  Barite           -0.45    -10.55  -10.10  BaSO4
+  Basaluminite     -1.67     21.03   22.70  Al4(OH)10SO4
+  Beidellite        5.58    -40.85  -46.43  (NaKMg0.5)0.11Al2.33Si3.67O10(OH)2
+  Boehmite          0.99     10.12    9.12  AlOOH
+  Brucite          -4.57     12.79   17.36  Mg(OH)2
+  Ca3(AsO4)2:4w   -12.15    -31.06  -18.91  Ca3(AsO4)2:4H2O
+  Chalcedony        0.52     -3.13   -3.64  SiO2
+  Chlorite14A       3.54     74.83   71.28  Mg5Al2Si3O10(OH)8
+  Chlorite7A        0.10     74.83   74.73  Mg5Al2Si3O10(OH)8
+  Chrysotile       -1.04     32.13   33.17  Mg3Si2O5(OH)4
+  Claudetite      -33.08    -34.55   -1.47  As2O3
+  Clinoenstatite   -2.06      9.67   11.73  MgSiO3
+  Cristobalite      0.57     -3.13   -3.69  SiO2
+  Diaspore          2.77     10.12    7.35  AlOOH
+  Diopside         -1.25     19.27   20.51  CaMgSi2O6
+  Epsomite         -4.45     -6.65   -2.19  MgSO4:7H2O
+  Forsterite       -6.77     22.46   29.24  Mg2SiO4
+  Gibbsite          1.57     10.12    8.55  Al(OH)3
+  Gypsum           -2.13     -6.71   -4.58  CaSO4:2H2O
+  H2(g)           -23.76    -26.88   -3.12  H2
+  H2O(g)           -1.71     -0.00    1.71  H2O
+  Halite           -6.31     -4.74    1.56  NaCl
+  Halloysite        0.72     13.98   13.26  Al2Si2O5(OH)4
+  Illite            5.31    -36.01  -41.32  K0.6Mg0.25Al2.3Si3.5O10(OH)2
+  Jurbanite        -6.09     -9.32   -3.23  AlOHSO4
+  Kaolinite         5.87     13.98    8.11  Al2Si2O5(OH)4
+  Kmica            11.24     25.08   13.84  KAl3Si3O10(OH)2
+  Laumontite        5.22    -26.50  -31.72  CaAl2Si4O12:4H2O
+  Leonhardite      18.48    -53.00  -71.48  Ca2Al4Si8O24:7H2O
+  Magadiite        -2.13    -16.43  -14.30  NaSi7O13(OH)3:3H2O
+  Mirabilite       -7.07     -8.55   -1.48  Na2SO4:10H2O
+  Montmorillonite-Ca   5.64    -40.50  -46.15  Ca0.165Al2.33Si3.67O10(OH)2
+  O2(g)           -38.31    -41.14   -2.83  O2
+  Phillipsite       1.91    -17.96  -19.87  Na0.5K0.5AlSi3O8:H2O
+  Phlogopite       -0.88     43.23   44.11  KMg3AlSi3O10(OH)2
+  Portlandite     -10.67     12.72   23.39  Ca(OH)2
+  Prehnite          1.24    -10.65  -11.89  Ca2Al2Si3O10(OH)2
+  Pyrophyllite      9.09    -39.22  -48.31  Al2Si4O10(OH)2
+  Quartz            0.97     -3.13   -4.10  SiO2
+  Sepiolite         0.25     16.21   15.97  Mg2Si3O7.5OH:3H2O
+  Sepiolite(d)     -2.45     16.21   18.66  Mg2Si3O7.5OH:3H2O
+  Silicagel        -0.02     -3.13   -3.10  SiO2
+  SiO2(a)          -0.35     -3.13   -2.78  SiO2
+  Talc              3.59     25.88   22.29  Mg3Si4O10(OH)2
+  Thenardite       -8.38     -8.55   -0.17  Na2SO4
+  Tremolite         5.98     64.41   58.43  Ca2Mg5Si8O22(OH)2
+  Wairakite         0.71    -26.50  -27.21  CaAl2Si4O12:2H2O
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+-------------------------------
+End of Run after 3.949 Seconds.
+-------------------------------
+

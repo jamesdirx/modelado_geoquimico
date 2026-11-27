@@ -1,9 +1,9 @@
-﻿Set-Content -Path .gitignore -Value @(
-    "__pycache__/",
-    "*.py[cod]",
-    ".venv/",
-    "venv/",
-    ".ipynb_checkpoints/",
-    "*.pqo",
-    "*.pqi"
-) -Encoding utf8
+﻿@"
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+*.pqo
+*.pqi
+"@ | Out-File -FilePath .gitignore -Encoding ascii

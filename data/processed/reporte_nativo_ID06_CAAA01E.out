@@ -1,0 +1,148 @@
+------------------------------------
+Reading input data for simulation 1.
+------------------------------------
+
+	TITLE Simulacion Universal - Proyecto El_Aguajito - Muestra ID06_CAAA01E
+	SOLUTION 1
+	    temp        28.5
+	    pH          4.1 charge
+	    pe          4.0
+	    units       mg/l
+	    Cl          4.100000
+	    S(6)        238.300000
+	    Ca          8.100000
+	    Na          26.300000
+	    K           25.300000
+	SELECTED_OUTPUT 1
+	    reset          false
+	    ph             true
+	    charge_balance true
+	    percent_error  true
+	    ionic_strength true
+	    user_punch     true
+	USER_PUNCH 1
+	    headings si_Calcite si_Aragonite si_Gypsum si_Anhydrite si_Chalcedony si_Quartz si_Halite si_Fluorite si_Hematite si_Magnetite si_Goethite si_Fe(OH)3(a) si_Jarosite-K si_Jarosite-Na si_Jarosite-H si_Jarosite(ss) si_Alunite si_Melanterite si_Epsomite si_Pyrite si_Sphalerite si_Galena si_Covellite
+	    10 PUNCH SI("Calcite")
+	    20 PUNCH SI("Aragonite")
+	    30 PUNCH SI("Gypsum")
+	    40 PUNCH SI("Anhydrite")
+	    50 PUNCH SI("Chalcedony")
+	    60 PUNCH SI("Quartz")
+	    70 PUNCH SI("Halite")
+	    80 PUNCH SI("Fluorite")
+	    90 PUNCH SI("Hematite")
+	    100 PUNCH SI("Magnetite")
+	    110 PUNCH SI("Goethite")
+	    120 PUNCH SI("Fe(OH)3(a)")
+	    130 PUNCH SI("Jarosite-K")
+	    140 PUNCH SI("Jarosite-Na")
+	    150 PUNCH SI("Jarosite-H")
+	    160 PUNCH SI("Jarosite(ss)")
+	    170 PUNCH SI("Alunite")
+	    180 PUNCH SI("Melanterite")
+	    190 PUNCH SI("Epsomite")
+	    200 PUNCH SI("Pyrite")
+	    210 PUNCH SI("Sphalerite")
+	    220 PUNCH SI("Galena")
+	    230 PUNCH SI("Covellite")
+	END
+-----
+TITLE
+-----
+
+ Simulacion Universal - Proyecto El_Aguajito - Muestra ID06_CAAA01E
+
+-------------------------------------------
+Beginning of initial solution calculations.
+-------------------------------------------
+
+Initial solution 1.	
+
+WARNING: Mineral Jarosite-H, not found.
+-----------------------------Solution composition------------------------------
+
+	Elements           Molality       Moles
+
+	Ca                2.022e-04   2.022e-04
+	Cl                1.157e-04   1.157e-04
+	K                 6.472e-04   6.472e-04
+	Na                1.144e-03   1.144e-03
+	S(6)              2.481e-03   2.481e-03
+
+----------------------------Description of solution----------------------------
+
+                                       pH  =   2.636      Charge balance
+                                       pe  =   4.000    
+                        Activity of water  =   1.000
+                 Ionic strength (mol/kgw)  =   6.820e-03
+                       Mass of water (kg)  =   1.000e+00
+                 Total alkalinity (eq/kg)  =  -2.883e-03
+                         Temperature (°C)  =  28.50
+                  Electrical balance (eq)  =   2.882e-12
+ Percent error, 100*(Cat-|An|)/(Cat+|An|)  =   0.00
+                               Iterations  =   6
+                                  Total H  = 1.110153e+02
+                                  Total O  = 5.551614e+01
+
+----------------------------Distribution of species----------------------------
+
+                                               Log       Log       Log    mole V
+   Species          Molality    Activity  Molality  Activity     Gamma    cm³/mol
+
+   H+              2.498e-03   2.310e-03    -2.602    -2.636    -0.034      0.00
+   OH-             6.144e-12   5.620e-12   -11.212   -11.250    -0.039     (0)  
+   H2O             5.551e+01   9.999e-01     1.744    -0.000     0.000     18.09
+Ca            2.022e-04
+   Ca+2            1.663e-04   1.183e-04    -3.779    -3.927    -0.148     (0)  
+   CaSO4           3.529e-05   3.535e-05    -4.452    -4.452     0.001     (0)  
+   CaHSO4+         5.463e-07   5.004e-07    -6.263    -6.301    -0.038     (0)  
+   CaOH+           9.239e-15   8.496e-15   -14.034   -14.071    -0.036     (0)  
+Cl            1.157e-04
+   Cl-             1.157e-04   1.058e-04    -3.937    -3.975    -0.039     (0)  
+H(0)          7.287e-17
+   H2              3.644e-17   3.649e-17   -16.438   -16.438     0.001     (0)  
+K             6.472e-04
+   K+              6.403e-04   5.859e-04    -3.194    -3.232    -0.039     (0)  
+   KSO4-           6.905e-06   6.342e-06    -5.161    -5.198    -0.037     (0)  
+Na            1.144e-03
+   Na+             1.136e-03   1.041e-03    -2.945    -2.982    -0.038     (0)  
+   NaSO4-          8.425e-06   7.738e-06    -5.074    -5.111    -0.037     (0)  
+O(0)          0.000e+00
+   O2              0.000e+00   0.000e+00   -58.389   -58.388     0.001     (0)  
+S(6)          2.481e-03
+   SO4-2           2.046e-03   1.450e-03    -2.689    -2.839    -0.150     (0)  
+   HSO4-           3.839e-04   3.519e-04    -3.416    -3.454    -0.038     (0)  
+   CaSO4           3.529e-05   3.535e-05    -4.452    -4.452     0.001     (0)  
+   NaSO4-          8.425e-06   7.738e-06    -5.074    -5.111    -0.037     (0)  
+   KSO4-           6.905e-06   6.342e-06    -5.161    -5.198    -0.037     (0)  
+   CaHSO4+         5.463e-07   5.004e-07    -6.263    -6.301    -0.038     (0)  
+
+------------------------------Saturation indices-------------------------------
+
+  Phase               SI** log IAP   log K(301 K,   1 atm)
+
+  Anhydrite        -2.39     -6.77   -4.38  CaSO4
+  Gypsum           -2.18     -6.77   -4.58  CaSO4:2H2O
+  H2(g)           -13.27    -16.44   -3.16  H2
+  H2O(g)           -1.42     -0.00    1.42  H2O
+  Halite           -8.55     -6.96    1.59  NaCl
+  Mirabilite       -7.85     -8.80   -0.95  Na2SO4:10H2O
+  O2(g)           -55.47    -58.39   -2.92  O2
+  Portlandite     -21.19      1.35   22.54  Ca(OH)2
+  Thenardite       -8.62     -8.80   -0.18  Na2SO4
+
+**For a gas, SI = log10(fugacity). Fugacity = pressure * phi / 1 atm.
+  For ideal gases, phi = 1.
+
+------------------
+End of simulation.
+------------------
+
+------------------------------------
+Reading input data for simulation 2.
+------------------------------------
+
+------------------------------
+End of Run after 2.99 Seconds.
+------------------------------
+
