@@ -7,3 +7,6 @@ venv/
 *.pqo
 *.pqi
 "@ | Out-File -FilePath .gitignore -Encoding ascii
+
+# Reportes nativos PHREEQC generados en lote
+data/processed/*.out
