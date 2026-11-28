@@ -6,6 +6,7 @@ sin modificar el código fuente.
 """
 
 import os
+import re
 import glob
 import shutil
 import argparse
@@ -28,17 +29,66 @@ def database_for_row(row, config):
     return str(config.get("BASE_DATOS_ACTIVA", "wateq4f.dat")).strip()
 
 
+#: Bloques de las bases de USGS que el IPhreeqc 3.7.3 de phreeqpy 0.6.0 no reconoce (ADR-003). Ninguno interviene
+#: en la especiación ni en los IS: GAS_BINARY_PARAMETERS solo afecta a GAS_PHASE con Peng-Robinson y MEAN_GAMMAS
+#: solo a la salida de coeficientes de actividad medios.
+UNSUPPORTED_DB_BLOCKS = ("GAS_BINARY_PARAMETERS", "MEAN_GAMMAS")
+#: Bloques omitidos al cargar cada base: {nombre de la base: [bloques]} (ADR-003).
+DATABASE_NOTES = {}
+_KEYWORD = re.compile(r"^([A-Z][A-Z_]{3,})(?=\s|#|$)")
+
+
+def strip_unsupported_blocks(text, keywords=UNSUPPORTED_DB_BLOCKS):
+    """Quita de una base los bloques de las palabras clave dadas, hasta la palabra clave siguiente (ADR-003).
+
+    Una palabra clave es una línea que empieza en la columna 0 con mayúsculas y guiones bajos (``PHASES``,
+    ``MEAN_GAMMAS``). Las fórmulas como ``H2O(g)`` o ``CaCl2`` no lo son.
+
+    Returns
+    -------
+    tuple
+        (texto sin los bloques, lista de bloques quitados en orden de aparición).
+    """
+    keywords = set(keywords)
+    out, removed, skip = [], [], False
+    for line in text.splitlines(keepends=True):
+        match = _KEYWORD.match(line)
+        if match:
+            skip = match.group(1) in keywords
+            if skip and match.group(1) not in removed:
+                removed.append(match.group(1))
+        if not skip:
+            out.append(line)
+    return "".join(out), removed
+
+
+def _load_errors(text):
+    """Errores de IPhreeqc al cargar el texto de una base ('' si carga)."""
+    probe = IPhreeqc()
+    try:
+        probe.load_database_string(text)
+        return probe.get_error_string().strip()
+    finally:
+        probe.destroy_iphreeqc()
+
+
 def load_database_text(db_name, cache):
-    """Texto de la base (con caché) tras comprobar que IPhreeqc la carga sin errores (ADR-002)."""
+    """Texto de la base (con caché) tras comprobar que IPhreeqc la carga sin errores (ADR-002).
+
+    Si no carga y tiene bloques que esta versión de IPhreeqc no reconoce (``UNSUPPORTED_DB_BLOCKS``), los quita,
+    avisa y lo anota en ``DATABASE_NOTES`` (ADR-003). Si sigue sin cargar, se detiene con los primeros errores.
+    """
     if db_name not in cache:
         with open(ensure_database(db_name), "r", encoding="utf-8", errors="ignore") as f:
             text = f.read()
-        probe = IPhreeqc()
-        try:
-            probe.load_database_string(text)
-            errors = probe.get_error_string().strip()
-        finally:
-            probe.destroy_iphreeqc()
+        errors = _load_errors(text)
+        if errors:
+            stripped, removed = strip_unsupported_blocks(text)
+            if removed and not _load_errors(stripped):
+                print(f"[!] {db_name}: se omitieron los bloques {', '.join(removed)}, que IPhreeqc 3.7.3 no "
+                      "reconoce (no intervienen en la especiación ni en los IS).")
+                DATABASE_NOTES[db_name] = removed
+                text, errors = stripped, ""
         if errors:
             raise RuntimeError(
                 f"IPhreeqc no pudo cargar la base '{db_name}' (versión incompatible con la librería de phreeqpy):\n"
@@ -304,7 +354,9 @@ def run_universal_engine(excel_path, output_excel, output_csv):
 
     with pd.ExcelWriter(output_excel, engine="openpyxl") as writer:
         df_res.to_excel(writer, sheet_name="Resultados_y_QC", index=False)
-        df_cfg_out = pd.DataFrame(list(config.items()), columns=["Parametro", "Valor_Usado"])
+        items = list(config.items())
+        items += [(f"BLOQUES_OMITIDOS_{name}", ", ".join(DATABASE_NOTES[name])) for name in bases if name in DATABASE_NOTES]
+        df_cfg_out = pd.DataFrame(items, columns=["Parametro", "Valor_Usado"])
         df_cfg_out.to_excel(writer, sheet_name="Configuracion_Corrida", index=False)
 
     print(f"[+] CSV universal guardado en: {output_csv}")

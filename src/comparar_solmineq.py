@@ -45,7 +45,7 @@ import numpy as np
 import pandas as pd
 from phreeqpy.iphreeqc.phreeqc_dll import IPhreeqc
 
-from engine import BASE_DIR, DEFAULT_TEMPLATE, ensure_database
+from engine import BASE_DIR, DEFAULT_TEMPLATE, load_database_text
 
 DEFAULT_OUTPUT = os.path.join(BASE_DIR, "reports", "Comparacion_PHREEQC_SOLMINEQ.xlsx")
 BASES = ("wateq4f.dat", "llnl.dat")
@@ -271,9 +271,8 @@ def compare(template: str, proyecto: str) -> Dict[str, pd.DataFrame]:
     if data.empty:
         raise ValueError(f"No hay muestras del proyecto {proyecto!r} en {template}")
     dbs = {}
-    for base in BASES:
-        with open(ensure_database(base), encoding="utf-8", errors="ignore") as fh:
-            dbs[base] = fh.read()
+    for base in BASES:  # misma carga que el motor: comprueba la base y omite bloques no reconocidos (ADR-003)
+        load_database_text(base, dbs)
 
     rows: List[Dict] = []
     for _, row in data.iterrows():

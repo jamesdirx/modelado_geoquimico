@@ -64,7 +64,7 @@ modelado_geoquimico/
 │   ├── importar_puna_tesis.py  # copia la Puna Norte del libro de la tesis a la plantilla
 │   ├── comparar_solmineq.py    # caso de comparación PHREEQC vs SOLMINEQ-Py
 │   ├── generar_guia_word.py    # genera la guía del caso de estudio (.docx)
-│   └── utils.py                # gráfico IS calcita vs. yeso (pendiente de adaptar, ver abajo)
+│   └── utils.py                # gráfico de covariación de IS por proyecto (calcita vs. yeso por defecto)
 ├── test/                       # pytest
 └── requirements.txt
 ```
@@ -215,9 +215,11 @@ La base global se elige con `BASE_DATOS_ACTIVA` (hoja `Configuracion`). Cada mue
 |----------------|---------------------------------------------------------------------------------------------|:-----------------:|
 | `wateq4f.dat`  | Base global por defecto. Derivada de WATEQ4F (Ball y Nordstrom, 1991): aguas naturales, metales traza y fases de Fe, Al y sulfatos ácidos. | Sí |
 | `llnl.dat`     | Lawrence Livermore National Laboratory: amplio rango de temperatura (0–300 °C), muchas especies, modelo B-dot. Usada por la Puna Norte. | Sí |
-| `phreeqc.dat`  | Base estándar de PHREEQC. **No usar por ahora:** la versión actual de USGS trae un bloque `GAS_BINARY_PARAMETERS` que el IPhreeqc 3.7.3 de `phreeqpy` 0.6.0 no reconoce, y no carga. | No |
+| `phreeqc.dat`  | Base estándar de PHREEQC. La versión actual de USGS trae los bloques `GAS_BINARY_PARAMETERS` y `MEAN_GAMMAS`, que el IPhreeqc 3.7.3 de `phreeqpy` 0.6.0 no reconoce: el motor los omite al cargarla y avisa (ADR-003). Se descarga la primera vez que se usa. | No |
 
 Las bases se versionan en el repositorio para que los resultados no cambien si USGS actualiza sus archivos.
+
+**Bloques no reconocidos (ADR-003).** Si una base no carga y contiene `GAS_BINARY_PARAMETERS` o `MEAN_GAMMAS`, el motor quita esos bloques (hasta la palabra clave siguiente), vuelve a probar la carga y avisa en la consola. Ninguno interviene en la especiación ni en los IS: el primero solo afecta a `GAS_PHASE` con Peng-Robinson y el segundo, a la salida de coeficientes de actividad medios. Los bloques omitidos quedan en la hoja `Configuracion_Corrida` del reporte (`BLOQUES_OMITIDOS_<base>`). Si la base sigue sin cargar, el motor se detiene con los primeros errores, como antes.
 
 Los nombres de las fases cambian entre bases (por ejemplo `Chalcedony`, `Pyrite`, `Jarosite-K`). Al cambiar de base, revisa que las fases activas de `Minerales_Objetivo` existan en ella. Si no existen, PHREEQC no calcula el IS de esa fase.
 
@@ -287,11 +289,12 @@ python -m pytest test
 # Guía del caso de estudio en Word -> reports/Caso_Estudio_Fluidos_Hidrotermales.docx
 python src/generar_guia_word.py
 
-# Gráfico IS calcita vs. yeso -> reports/figures/calcita_vs_yeso.png
+# Gráfico de IS por proyecto -> reports/figures/Calcite_vs_Gypsum_<Proyecto>.png
 python src/utils.py
+python src/utils.py --proyecto Puna_Norte --x Calcite --y Anhydrite
 ```
 
-`utils.py` todavía lee `data/processed/puna_speciation_results.csv`, que generaba el flujo anterior (`modeler.py`, ya retirado): hay que adaptarlo a `resultados_universales_phreeqc.csv`.
+`utils.py` lee `data/processed/resultados_universales_phreeqc.csv` (corre antes `src/engine.py`) y hace un gráfico por proyecto, con un marcador por área. Las muestras sin alguno de los dos IS (por ejemplo, aguas ácidas sin carbono) se omiten y se listan en la consola. `--csv` y `--outdir` cambian la entrada y la carpeta de salida.
 
 ## Limitaciones conocidas
 
