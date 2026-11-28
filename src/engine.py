@@ -20,6 +20,34 @@ DEFAULT_OUTPUT_EXCEL = os.path.join(BASE_DIR, "reports", "Reporte_Universal_Geoq
 DEFAULT_OUTPUT_CSV = os.path.join(BASE_DIR, "data", "processed", "resultados_universales_phreeqc.csv")
 
 
+def database_for_row(row, config):
+    """Base termodinámica de la fila: columna Base_Datos si está llena; si no, BASE_DATOS_ACTIVA (ADR-002)."""
+    value = row.get("Base_Datos")
+    if value is not None and pd.notnull(value) and str(value).strip():
+        return str(value).strip()
+    return str(config.get("BASE_DATOS_ACTIVA", "wateq4f.dat")).strip()
+
+
+def load_database_text(db_name, cache):
+    """Texto de la base (con caché) tras comprobar que IPhreeqc la carga sin errores (ADR-002)."""
+    if db_name not in cache:
+        with open(ensure_database(db_name), "r", encoding="utf-8", errors="ignore") as f:
+            text = f.read()
+        probe = IPhreeqc()
+        try:
+            probe.load_database_string(text)
+            errors = probe.get_error_string().strip()
+        finally:
+            probe.destroy_iphreeqc()
+        if errors:
+            raise RuntimeError(
+                f"IPhreeqc no pudo cargar la base '{db_name}' (versión incompatible con la librería de phreeqpy):\n"
+                + "\n".join(errors.splitlines()[:4])
+            )
+        cache[db_name] = text
+    return cache[db_name]
+
+
 def ensure_database(db_name):
     """Verifica que la base de datos seleccionada en el catálogo exista localmente."""
     db_path = os.path.join(BASE_DIR, "database", db_name)
@@ -95,7 +123,9 @@ def build_dynamic_phreeqc_input(row, config, active_minerals):
         ("SiO2_mgL", "Si", "as SiO2"),
         ("B_mgL", "B", ""),
         ("NH4_mgL", "N(-3)", "as NH4"),
-        ("S_2_mgL", "S(-2)", "")
+        ("S_2_mgL", "S(-2)", ""),
+        ("Br_mgL", "Br", ""),           # ADR-002
+        ("NO3_mgL", "N(5)", "as NO3"),  # ADR-002
     ]
     for col_name, phreeqc_elem, suffix in major_map:
         if col_name in row and pd.notnull(row[col_name]):
@@ -125,7 +155,8 @@ def build_dynamic_phreeqc_input(row, config, active_minerals):
         ("Pb_traza", "Pb"),
         ("Ba_traza", "Ba"),
         ("As_traza", "As"),
-        ("Sb_traza", "Sb")
+        ("Sb_traza", "Sb"),
+        ("Co_traza", "Co"),  # ADR-002 (wateq4f.dat no tiene Co: PHREEQC lo toma como cero)
     ]
     for col_name, phreeqc_elem in trace_map:
         if col_name in row and pd.notnull(row[col_name]):
@@ -135,7 +166,10 @@ def build_dynamic_phreeqc_input(row, config, active_minerals):
 
     # 5. Bloque de Gases (EQUILIBRIUM_PHASES)
     if modo_gas == "CO2_PROFUNDO" or modo_ph == "REEQUILIBRIO_GAS":
-        if pd.notnull(row.get("P_CO2_profunda_bar")) and float(row["P_CO2_profunda_bar"]) > 0:
+        if not (pd.notnull(row.get("P_CO2_profunda_bar")) and float(row["P_CO2_profunda_bar"]) > 0):
+            # ADR-002: no se omite en silencio el reequilibrio pedido
+            print(f"[!] Aviso {muestra}: modo {modo_ph}/{modo_gas} sin P_CO2_profunda_bar; se calcula sin reequilibrio con CO2.")
+        else:
             log_pco2 = np.log10(float(row["P_CO2_profunda_bar"]))
             lines.extend([
                 "",
@@ -171,11 +205,10 @@ def build_dynamic_phreeqc_input(row, config, active_minerals):
 def run_universal_engine(excel_path, output_excel, output_csv):
     """Ejecuta la simulación universal y construye el reporte de auditoría QC."""
     config, active_minerals, df_data = load_excel_configuration(excel_path)
-    db_name = str(config.get("BASE_DATOS_ACTIVA", "wateq4f.dat")).strip()
-    db_path = ensure_database(db_name)
-
-    with open(db_path, "r", encoding="utf-8", errors="ignore") as f:
-        db_string = f.read()
+    db_cache = {}
+    bases = sorted({database_for_row(r, config) for _, r in df_data.iterrows()})
+    for name in bases:  # falla temprano y con un mensaje claro si una base no carga
+        load_database_text(name, db_cache)
 
     export_out = str(config.get("EXPORTAR_REPORTES_OUT", "SI")).upper().strip() == "SI"
     tol_is = float(config.get("TOLERANCIA_QC_IS", 0.30))
@@ -185,15 +218,16 @@ def run_universal_engine(excel_path, output_excel, output_csv):
     os.makedirs(os.path.dirname(output_excel), exist_ok=True)
 
     results = []
-    print(f"[-] Procesando {len(df_data)} muestras con la base '{db_name}'...")
+    print(f"[-] Procesando {len(df_data)} muestras con la(s) base(s): {', '.join(bases)}...")
 
     for idx, row in df_data.iterrows():
         muestra = str(row["Muestra"]).strip()
         input_string, headings = build_dynamic_phreeqc_input(row, config, active_minerals)
+        db_name = database_for_row(row, config)
 
         phreeqc = IPhreeqc()
         try:
-            phreeqc.load_database_string(db_string)
+            phreeqc.load_database_string(db_cache[db_name])
             if export_out:
                 try:
                     phreeqc.set_output_file_on()
@@ -225,7 +259,9 @@ def run_universal_engine(excel_path, output_excel, output_csv):
                     "pH_Ref": row.get("pH_Ref", np.nan),
                     "Balance_Carga_eq": full_dict.get("charge(eq)", full_dict.get("cb", np.nan)),
                     "Error_Balance_%": full_dict.get("pct_err", np.nan),
-                    "Fuerza_Ionica_mu": full_dict.get("mu", np.nan)
+                    "Fuerza_Ionica_mu": full_dict.get("mu", np.nan),
+                    "Base_Datos": db_name,  # ADR-002
+                    "Nota_Datos": row.get("Nota_Datos"),
                 }
 
                 # Evaluar QC de pH si existe pH_Ref (ej. Tabla 7 de Agua Agria - El Aguajito)
