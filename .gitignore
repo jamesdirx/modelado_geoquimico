@@ -17,3 +17,12 @@ venv/
 
 # Archivos de bloqueo de Excel/Word mientras están abiertos (Windows)
 ~$*
+
+# Paquetes de ADR descomprimidos dentro del repositorio (ADR-004)
+ADR-*/
+
+# Salidas regenerables del motor (ADR-004): entradas/salidas de PHREEQC por muestra, trazabilidad en JSON
+# (también está en la hoja Trazabilidad del reporte) y reportes nativos del formato anterior a ADR-004
+reports/phreeqc/
+data/processed/*_trazabilidad.json
+data/processed/reporte_nativo_*.out

@@ -1,0 +1,5 @@
+# SHA-256 de las bases versionadas, calculado con finales de línea LF (ADR-004).
+# engine.py avisa si una base no coincide: los resultados dejarían de ser comparables.
+# Si se actualiza una base a propósito, actualizar también su línea (y registrarlo en DECISIONS.md).
+1324b807f0f864806fc42df308f6ca7c5e8ce2ed8060d76351452f76beeb819b  llnl.dat
+15a0ad8ae92fc8f52182377802be26352b0ac00ba46c37f02f3bba98e98abbf6  wateq4f.dat

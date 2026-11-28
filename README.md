@@ -51,13 +51,15 @@ modelado_geoquimico/
 │   │   └── Caso_Estudio_Puna_Completo.xlsx      # libro fuente de la Puna Norte (Tablas 6-3 a 6-8)
 │   └── processed/
 │       ├── resultados_universales_phreeqc.csv   # salida del motor
-│       └── reporte_nativo_<Muestra>.out         # salidas nativas de PHREEQC
+│       └── resultados_universales_phreeqc_trazabilidad.json   # versiones y SHA-256 de la corrida (no se versiona)
 ├── database/
 │   ├── wateq4f.dat                              # base termodinámica (USGS)
-│   └── llnl.dat                                 # base termodinámica (USGS/LLNL), usada por la Puna Norte
+│   ├── llnl.dat                                 # base termodinámica (USGS/LLNL), usada por la Puna Norte
+│   └── SHA256SUMS                               # SHA-256 registrado de las bases (ADR-004)
 ├── notebooks/
 ├── reports/
 │   ├── Reporte_Universal_Geoquimico.xlsx        # reporte del motor
+│   ├── phreeqc/<Proyecto>/                      # entrada y salidas de PHREEQC por muestra, .txt (no se versiona)
 │   └── figures/
 ├── src/
 │   ├── engine.py               # motor principal (punto de entrada)
@@ -66,6 +68,7 @@ modelado_geoquimico/
 │   ├── generar_guia_word.py    # genera la guía del caso de estudio (.docx)
 │   └── utils.py                # gráfico de covariación de IS por proyecto (calcita vs. yeso por defecto)
 ├── test/                       # pytest
+├── DECISIONS.md                # registro de decisiones (ADR)
 └── requirements.txt
 ```
 
@@ -155,7 +158,7 @@ Parámetros globales de la corrida:
 |-------------------------|---------------|--------------------------------------------------------------------------------|
 | `BASE_DATOS_ACTIVA`     | `wateq4f.dat` | Base termodinámica en `database/`. Ver [Bases de datos](#bases-de-datos-termodinámicas). |
 | `FILTRO_PROYECTO`       | `TODOS`       | `TODOS` o el nombre de un proyecto de la columna `Proyecto`.                   |
-| `EXPORTAR_REPORTES_OUT` | `SI`          | Si es `SI`, guarda `reporte_nativo_<Muestra>.out` en `data/processed/`.        |
+| `EXPORTAR_REPORTES_OUT` | `SI`          | Si es `SI`, guarda la entrada y las salidas de PHREEQC de cada muestra en `reports/phreeqc/<Proyecto>/` (ver [Salidas](#salidas)). |
 | `TOLERANCIA_QC_IS`      | `0.30`        | Diferencia máxima aceptada \|IS_modelo − IS_ref\|.                             |
 | `TOLERANCIA_QC_PH`      | `0.15`        | Diferencia máxima aceptada \|pH_modelo − pH_ref\|.                             |
 | `PE_DEFECTO`            | `4`           | pe usado cuando la muestra no trae `pe`.                                       |
@@ -228,8 +231,26 @@ Los nombres de las fases cambian entre bases (por ejemplo `Chalcedony`, `Pyrite`
 | Archivo                                             | Contenido                                                                 |
 |-----------------------------------------------------|---------------------------------------------------------------------------|
 | `data/processed/resultados_universales_phreeqc.csv` | Una fila por muestra con los resultados y las columnas de QC.             |
-| `reports/Reporte_Universal_Geoquimico.xlsx`         | Hoja `Resultados_y_QC` (lo mismo que el CSV) y hoja `Configuracion_Corrida` (parámetros usados). |
-| `data/processed/reporte_nativo_<Muestra>.out`       | Salida completa de PHREEQC: distribución de especies, actividades, IS de todas las fases. Solo si `EXPORTAR_REPORTES_OUT = SI`. |
+| `reports/Reporte_Universal_Geoquimico.xlsx`         | Hojas `Resultados_y_QC` (lo mismo que el CSV), `Configuracion_Corrida` (parámetros usados) y `Trazabilidad`. |
+| `data/processed/resultados_universales_phreeqc_trazabilidad.json` | La trazabilidad de la corrida en JSON. |
+| `reports/phreeqc/<Proyecto>/<Muestra>_entrada.txt`  | Entrada de PHREEQC de la muestra (equivale a un `.pqi`; se puede abrir en PHREEQC Interactive). Solo si `EXPORTAR_REPORTES_OUT = SI`. |
+| `reports/phreeqc/<Proyecto>/<Muestra>_salida.txt`   | Salida completa de PHREEQC: distribución de especies, actividades, IS de todas las fases (equivale a un `.pqo`). |
+| `reports/phreeqc/<Proyecto>/<Muestra>_selected_output.txt` | SELECTED_OUTPUT de la muestra, separado por tabuladores. |
+
+**Entradas y salidas de PHREEQC (ADR-004).**
+
+- Cada muestra corre en su propia carpeta temporal, así que su salida es solo suya, aunque haya archivos `.out` viejos en la carpeta desde la que se ejecuta.
+- Los tres archivos son texto UTF-8. PHREEQC mezcla UTF-8 y Latin-1 en su salida, y el motor la deja toda en UTF-8, para que se pueda abrir en cualquier editor y subir a cualquier repositorio de documentos.
+- El nombre de archivo se obtiene del nombre de la muestra: cambia `< > : " / \ | ? *` por `_` y evita los nombres reservados de Windows. La columna `Archivos_PHREEQC` del resultado indica dónde quedaron los archivos de cada muestra.
+- La carpeta `reports/phreeqc/` no se versiona, porque se regenera en cada corrida. Los `reporte_nativo_<Muestra>.out` del formato anterior se pueden borrar.
+
+**Trazabilidad (ADR-004).** La hoja `Trazabilidad` registra:
+- la fecha, el commit de git, la versión de Python y el sistema;
+- las versiones de phreeqpy y de IPhreeqc, que se leen de la librería;
+- la ruta y el SHA-256 de la plantilla;
+- de cada base usada: su SHA-256, si coincide con `database/SHA256SUMS`, los bloques omitidos y las fases del catálogo que no existen en ella.
+
+Si una base no coincide con `SHA256SUMS`, el motor avisa en la consola, porque los resultados dejarían de ser comparables con las corridas anteriores. El SHA-256 se calcula con finales de línea LF, para que no cambie si git los convierte a CRLF en Windows. Si una base se actualiza a propósito, hay que actualizar su línea en `SHA256SUMS` y registrarlo en `DECISIONS.md`.
 
 Columnas del resultado:
 
@@ -237,6 +258,7 @@ Columnas del resultado:
 - **Solución:** `pH_calculado`, `Balance_Carga_eq`, `Error_Balance_%`, `Fuerza_Ionica_mu`.
 - **QC de pH:** `pH_Ref`, `Delta_pH`, `QC_pH`.
 - **Minerales:** `si_<Fase>` para cada fase activa. Si hay referencia: `<columna_ref>`, `Delta_<Fase>` y `QC_<Fase>`.
+- **Avisos (ADR-004):** en `Avisos` quedan los avisos del motor (por ejemplo, reequilibrio pedido sin `P_CO2_profunda_bar`) y los de PHREEQC (`PHREEQC: ...`), como un elemento que no está en la base o problemas de convergencia. Las fases del catálogo que no existen en la base no se repiten en cada muestra: se informan una vez por base en la hoja `Trazabilidad`. `Archivos_PHREEQC` indica la ruta de los archivos de la muestra, sin extensión.
 
 Un IS sin valor (vacío) indica que a la muestra le falta algún elemento del mineral. PHREEQC devuelve −999 en ese caso y el motor lo convierte en vacío.
 
@@ -282,6 +304,12 @@ Las hojas `Notas`, `Resumen`, `IS`, `Especies_A`, `Condiciones`, `Geotermometros
 ```bash
 python -m pytest test
 ```
+
+`test_adr_004.py` corre el motor completo en una carpeta temporal y comprueba que las columnas anteriores del CSV coinciden con las de `data/processed/resultados_universales_phreeqc.csv`.
+
+## Registro de decisiones
+
+Las decisiones de diseño, con su contexto y sus consecuencias, están en [`DECISIONS.md`](DECISIONS.md) (ADR-001 en adelante). Cada ADR se aplica con su script `apply_adr_NNN.py`: verifica el paquete y el repositorio, no escribe nada si encuentra archivos que cambiaron y es idempotente.
 
 ## Scripts complementarios
 
